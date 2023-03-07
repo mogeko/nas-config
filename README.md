@@ -1,10 +1,10 @@
 # Ignition Generator
 
-Producing a FCOS/RHCOS [Ignition Config](https://docs.fedoraproject.org/en-US/fedora-coreos/producing-ign) for NAS.
+Producing a [FCOS](https://docs.fedoraproject.org/en-US/fedora-coreos)/[RHCOS](https://access.redhat.com/documentation/en-us/openshift_container_platform/4.8/html/architecture/architecture-rhcos) [Ignition Config](https://docs.fedoraproject.org/en-US/fedora-coreos/producing-ign) for NAS.
 
 ## Usage (Only for [@mogeko](https://github.com/mogeko) personal)
 
-> **Warning** You should **NEVER use this Ignition** directly. You **SHOULD** follow [the guide to create your own Ignition](#usage-for-you).
+> **Warning** You should **NEVER use this Ignition** directly. You **SHOULD** [follow the guide](#usage-for-you) to create your own Ignition.
 
 Install the system by `coreos-installer` in the [Live CD](https://docs.fedoraproject.org/en-US/fedora-coreos/bare-metal/#_installing_from_live_iso):
 
@@ -32,9 +32,9 @@ mkpasswd --method=yescrypt
 
 3. In your own repo, find **Actions** -> **lgnition Generator** -> **Run workflow**.
 
-   Fill in the **username**, **the hash for user's password** and **SSH public key** according to the prompt.
+   Fill in the _**username**_, _**the hash for user's password**_ and _**SSH public key**_ according to the prompt,
 
-   Then, RUN!
+   and then run!
 
 <img width="1440" alt="run-workflow" src="https://user-images.githubusercontent.com/26341224/223501029-cd36d021-6726-4c82-974a-474f56759403.png">
 
@@ -43,3 +43,7 @@ GitHub Action will push your Ignition (`nas.ign`) to the GitHub Page, that is:
 ```txt
 <github-username>.github.io/<repo>/nas.ign
 ```
+
+## License
+
+The code in this project is released under the [MIT License](./LICENSE).
