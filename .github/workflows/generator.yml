@@ -1,4 +1,4 @@
-name: Create an Ignition Config File
+name: Ignition Generator
 
 on:
   workflow_dispatch:
