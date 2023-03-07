@@ -25,9 +25,6 @@ concurrency:
 jobs:
   generate:
     runs-on: ubuntu-latest
-    container:
-      image: quay.io/coreos/butane:release
-      options: --entrypoint /bin/bash
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -36,11 +33,16 @@ jobs:
           USERNAME: ${{ github.event.inputs.username }}
           SSH_PUB_KEY: ${{ github.event.inputs.ssh_pub_key }}
           PASSWD_HASH: ${{ github.event.inputs.passwd_hash }}
-        run: envsubst < .github/config.template | butane --pretty --strict > nas.ign
+        run: envsubst < .github/config.template > config.fcc
+      - name: Generate Ignition File
+        run: |
+          mkdir -p ./out
+          docker run --rm -v ${PWD}:/pwd -w /pwd \
+              quay.io/coreos/butane:release --pretty --strict config.fcc > ./out/nas.ign
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: ./nas.ign
+          path: ./out
 
   deploy:
     environment:
@@ -48,7 +50,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master'
-    needs: build
+    needs: generate
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
