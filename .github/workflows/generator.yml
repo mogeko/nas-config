@@ -25,18 +25,19 @@ concurrency:
 jobs:
   generate:
     runs-on: ubuntu-latest
-    container:
-      image: quay.io/coreos/butane:release
-      options: --entrypoint /bin/bash
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Generate an Ignition Config File with Template
+      - name: Generate Config File with Template
         env:
           USERNAME: ${{ github.event.inputs.username }}
           SSH_PUB_KEY: ${{ github.event.inputs.ssh_pub_key }}
           PASSWD_HASH: ${{ github.event.inputs.passwd_hash }}
-        run: envsubst < .github/config.template | butane --pretty --strict > nas.ign
+        run: envsubst < .github/config.template > config.fcc
+      - name: Generate Ignition File
+        run: |
+          docker run --rm -v ${PWD}:/pwd -w /pwd \
+              quay.io/coreos/butane:release --pretty --strict config.fcc > nas.ign
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
