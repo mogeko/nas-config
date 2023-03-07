@@ -20,14 +20,14 @@ Or, install by [PXE/iPXE](https://docs.fedoraproject.org/en-US/fedora-coreos/bar
 
 1. Create your own repo from this [template](https://github.com/mogeko/nas-ignition/generate).
 
-2. Use `ssh-keygen` and `mkpasswd` to generate **SSH public keys** and **the hash for user's password**.
+2. Use [`ssh-keygen`](https://wiki.archlinux.org/title/SSH_keys) and [`mkpasswd`](https://docs.fedoraproject.org/en-US/fedora-coreos/authentication/#_using_password_authentication) to generate **SSH public keys** and **the hash for user's password**.
 
 ```shell
 # Generate a new pair of SSH keys.
 # By default, your SSH public key is placed in ~/.ssh/id_rsa.pub
 ssh-keygen -C your.email@example.com && cat ${HOME}/.ssh/id_rsa.pub
 # Enter the password you want to set, and mkpasswd will return its hash.
-mkpasswd --method=yescrypt
+docker run -ti --rm quay.io/coreos/mkpasswd --method=yescrypt
 ```
 
 3. In your own repo, find **Actions** -> **lgnition Generator** -> **Run workflow**.
