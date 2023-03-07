@@ -36,12 +36,13 @@ jobs:
         run: envsubst < .github/config.template > config.fcc
       - name: Generate Ignition File
         run: |
+          mkdir -p ./out
           docker run --rm -v ${PWD}:/pwd -w /pwd \
-              quay.io/coreos/butane:release --pretty --strict config.fcc > nas.ign
+              quay.io/coreos/butane:release --pretty --strict config.fcc > ./out/nas.ign
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: ./nas.ign
+          path: ./out
 
   deploy:
     environment:
