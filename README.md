@@ -4,7 +4,7 @@ Producing a [FCOS](https://docs.fedoraproject.org/en-US/fedora-coreos)/[RHCOS](h
 
 ## Usage (Only for [@mogeko](https://github.com/mogeko) personal)
 
-> **Warning** You should **NEVER use this Ignition** directly. You **SHOULD** [follow the guide](#usage-for-you) to create your own Ignition.
+> **Warning** You should **NEVER use this Ignition** directly. You **SHOULD** [create your own Ignition](#usage-for-you).
 
 Install the system by `coreos-installer` in the [Live CD](https://docs.fedoraproject.org/en-US/fedora-coreos/bare-metal/#_installing_from_live_iso):
 
