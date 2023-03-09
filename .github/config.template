@@ -12,6 +12,15 @@ storage:
       mode: 0644
       contents:
         inline: nas
+    - path: /etc/fstab
+      mode: 0644
+      contents:
+        inline: |
+          # Fedora CoreOS uses systemd.mount to manage mounts by default, but it is
+          # undeniable that /etc/fstab is still widely used. Especially it is very
+          # intuitive for human beings.
+
+          # <device>                                <dir> <type> <options> <dump> <fsck>
     - path: /etc/ssh/sshd_config.d/20-enable-passwords.conf
       mode: 0644
       contents:
