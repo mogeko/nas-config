@@ -12,6 +12,15 @@ storage:
       mode: 0644
       contents:
         inline: nas
+    - path: /etc/fstab
+      mode: 0644
+      contents:
+        inline: |
+          # Fedora CoreOS uses systemd.mount to manage mounts by default, but it is
+          # undeniable that /etc/fstab is still widely used. Especially it is very
+          # intuitive for human beings.
+
+          # <device>                                <dir> <type> <options> <dump> <fsck>
     - path: /etc/ssh/sshd_config.d/20-enable-passwords.conf
       mode: 0644
       contents:
@@ -26,3 +35,17 @@ storage:
         inline: |
           # Allow user ${USERNAME} to use sudo with their own password.
           ${USERNAME} ALL=(ALL) ALL
+    - path: /etc/systemd/resolved.conf.d/enable-mdns.conf
+      mode: 0644
+      contents:
+        inline: |
+          # Enable the systemd-resolved as a mDNS resolver and responder.
+          [Resolve]
+          MulticastDNS=yes
+    - path: /etc/NetworkManager/conf.d/connect-mdns.conf
+      mode: 0644
+      contents:
+        inline: |
+          # Make sure that NetworkManager connect to the mDNS responder.
+          [connection]
+          connection.mdns=2
