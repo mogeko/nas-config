@@ -1,3 +1,9 @@
+# Enable environment variables for dev
+ifneq (,$(wildcard ./.env))
+    include .env
+    export
+endif
+
 ENVSUBST := /usr/bin/env envsubst
 BUTANE := /usr/bin/env butane
 
