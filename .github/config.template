@@ -26,3 +26,17 @@ storage:
         inline: |
           # Allow user ${USERNAME} to use sudo with their own password.
           ${USERNAME} ALL=(ALL) ALL
+    - path: /etc/systemd/resolved.conf.d/enable-mdns.conf
+      mode: 0644
+      contents:
+        inline: |
+          # Enable the systemd-resolved as a mDNS resolver and responder.
+          [Resolve]
+          MulticastDNS=yes
+    - path: /etc/NetworkManager/conf.d/connect-mdns.conf
+      mode: 0644
+      contents:
+        inline: |
+          # Make sure that NetworkManager connect to the mDNS responder.
+          [connection]
+          connection.mdns=2
