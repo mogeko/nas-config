@@ -16,11 +16,14 @@ all: nas.ign
 fcc: $(TEMPLATE)
 	@$(ENVSUBST) < $(TEMPLATE)
 
-%.fcc:
+%.fcc: clean
 	@$(MAKE) -s fcc > $@
 
 ign:
 	@$(MAKE) -s fcc | $(BUTANE) --pretty --strict
 
-%.ign:
+%.ign: clean
 	@$(MAKE) -s ign > $@
+
+clean:
+	@rm -f *.ign *.fcc
