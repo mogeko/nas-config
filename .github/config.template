@@ -6,8 +6,13 @@ passwd:
       ssh_authorized_keys:
         - ${SSH_PUB_KEY}
       password_hash: ${PASSWD_HASH}
+kernel_arguments:
+  should_exist:
+    - "crashkernel=300M"
 systemd:
   units:
+    - name: kdump.service
+      enabled: true
     # To install `cockpit-*` packages by `rpm-ostree`.
     # In the future, It will will have a more Ignition-friendly method of doing this
     # with stronger guarantees.
