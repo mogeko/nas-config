@@ -27,21 +27,20 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Generate an Ignition Config File with Template
+      - name: Generate an Butane Config with template
         env:
           USERNAME: ${{ github.event.inputs.username }}
           SSH_PUB_KEY: ${{ github.event.inputs.ssh_pub_key }}
           PASSWD_HASH: ${{ github.event.inputs.passwd_hash }}
         run: envsubst < .github/config.template > config.fcc
-      - name: Generate Ignition File
+      - name: Generate an Ignition by Butane
         run: |
-          mkdir -p ./out
           docker run --rm -v ${PWD}:/pwd -w /pwd \
-              quay.io/coreos/butane:release --pretty --strict config.fcc > ./out/nas.ign
+              quay.io/coreos/butane:release --pretty --strict config.fcc > nas.ign
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: ./out
+          path: .
 
   deploy:
     environment:
