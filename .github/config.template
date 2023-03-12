@@ -89,18 +89,18 @@ storage:
         inline: |
           # Allow user ${USERNAME} to use sudo with their own password.
           ${USERNAME} ALL=(ALL) ALL
-    - path: /etc/systemd/resolved.conf.d/enable-mdns.conf
+    - path: /etc/systemd/resolved.conf.d/20-enable-mdns.conf
       mode: 0644
       contents:
         inline: |
           # Enable the systemd-resolved as a Multicast DNS resolver and responder.
           [Resolve]
           MulticastDNS=yes
-    - path: /etc/NetworkManager/conf.d/connect-mdns.conf
+    - path: /etc/NetworkManager/conf.d/20-enable-mdns.conf
       mode: 0644
       contents:
         inline: |
-          # Make sure that NetworkManager connect to the Multicast DNS responder.
+          # Make sure that NetworkManager enables the Multicast DNS for any connection.
           [connection]
           connection.mdns=2
     - path: /etc/systemd/zram-generator.conf.d/zz-enable-zram.conf
