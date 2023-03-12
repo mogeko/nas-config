@@ -45,10 +45,13 @@ systemd:
 
         [Service]
         Type=oneshot
-        ExecStartPre=-/usr/bin/podman rm -f cockpit-ws
+        RemainAfterExit=yes
+        ExecStartPre=-/bin/podman rm -f cockpit-ws
+        ExecStartPre=-/usr/bin/podman pull quay.io/cockpit/ws:latest
         ExecStart=/usr/bin/podman container runlabel --name cockpit-ws RUN quay.io/cockpit/ws:latest
         ExecStop=/usr/bin/podman rm -f cockpit-ws
-        RemainAfterExit=yes
+        Restart=on-failure
+        RestartSec=5s
         KillMode=none
 
         [Install]
