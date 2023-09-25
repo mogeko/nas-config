@@ -6,6 +6,9 @@ passwd:
       ssh_authorized_keys:
         - ${SSH_PUB_KEY}
       password_hash: ${PASSWD_HASH}
+      groups:
+        - wheel
+        - sudo
 kernel_arguments:
   should_exist:
     - "crashkernel=300M"
@@ -75,20 +78,14 @@ storage:
           # intuitive for human beings.
 
           # <device>                                <dir> <type> <options> <dump> <fsck>
-    - path: /etc/ssh/sshd_config.d/20-enable-passwords.conf
+    - path: /etc/ssh/sshd_config.d/60-enable-passwords.conf
       mode: 0644
       contents:
         inline: |
           # Fedora CoreOS disables SSH password login by default.
           # Re-enable it.
-          # This file must sort before `04-disable-passwords.conf`.
+          # This file must sort before `40-disable-passwords.conf`.
           PasswordAuthentication yes
-    - path: /etc/sudoers.d/coreos-${USERNAME}-user
-      mode: 0440
-      contents:
-        inline: |
-          # Allow user ${USERNAME} to use sudo with their own password.
-          ${USERNAME} ALL=(ALL) ALL
     - path: /etc/systemd/resolved.conf.d/20-enable-mdns.conf
       mode: 0644
       contents:

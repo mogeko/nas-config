@@ -7,23 +7,24 @@ endif
 ENVSUBST := /usr/bin/env envsubst
 BUTANE := /usr/bin/env butane
 
-TEMPLATE := $(PWD)/.github/config.template
+TEMPLATE := $(PWD)/ignitions/main.yml
 
-.PHONY: all fcc ign
+.PHONY: all
+all: dist/ignition.json
 
-all: nas.ign
+dist/ignition.json: dist/butane.yml
+	@$(BUTANE) --pretty --strict $< > $@
 
-fcc: $(TEMPLATE)
-	@$(ENVSUBST) < $(TEMPLATE)
+dist/butane.yml: $(TEMPLATE) dist
+	@$(ENVSUBST) < $< > $@
 
-%.fcc: clean
-	@$(MAKE) -s fcc > $@
+dist:
+	@mkdir -p $@
 
-ign:
-	@$(MAKE) -s fcc | $(BUTANE) --pretty --strict
-
-%.ign: clean
-	@$(MAKE) -s ign > $@
-
+.PHONY: clean
 clean:
-	@rm -f *.ign *.fcc
+	@rm -r dist
+
+.PHONY: serve
+serve: dist/ignition.json
+	@python3 -m http.server -d dist

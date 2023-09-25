@@ -68,6 +68,5 @@ $RECYCLE.BIN/
 *.lnk
 
 # Development
-**/.env
-**/*.fcc
-**/*.ign
+dist/
+.env*
