@@ -9,12 +9,16 @@ passwd:
       groups:
         - wheel
         - sudo
-kernel_arguments:
-  should_exist:
-    - "crashkernel=300M"
+# kexec doesn't work yet on 6.2+ kernels
+# See: https://github.com/coreos/fedora-coreos-tracker/issues/1430
+# kernel_arguments:
+#   should_exist:
+#     - "crashkernel=300M"
 systemd:
   units:
-    - name: kdump.service
+    # - name: kdump.service
+    #   enabled: true
+    - name: podman-auto-update.service
       enabled: true
     # To install `cockpit-*` packages by `rpm-ostree`.
     # In the future, It will will have a more Ignition-friendly method of doing this
@@ -83,8 +87,8 @@ storage:
           PodmanArgs=--pid=host
           Network=host
           Mount=type=bind,src=/,dst=/host,ro=true,bind-propagation=rslave
-          Pull=newer
           AddCapability=SYS_TIME
+          AutoUpdate=registry
           Exec=--path.rootfs=/host
 
           [Install]
