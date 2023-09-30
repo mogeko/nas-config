@@ -26,11 +26,11 @@ systemd:
     #   enabled: true
     - name: podman-auto-update.service
       enabled: true
-    - name: setup-subuid-and-subgid-for-containers.service
+    - name: setup-subxid-root-user.service
       enabled: false
       contents: |
         [Unit]
-        Description=Setup `/etc/subuid` and `/etc/subgid` for user "containers"
+        Description=Setup `/etc/subuid` and `/etc/subgid` for root (containers) user
         ConditionPathExists=!/var/lib/%N.stamp
 
         [Service]
@@ -160,3 +160,5 @@ storage:
     #     inline: |
     #       # Enable a `/dev/zram0` device.
     #       [zram0]
+    - path: /var/lib/systemd/linger/core
+      mode: 0644
