@@ -67,7 +67,4 @@ $RECYCLE.BIN/
 # Windows shortcuts
 *.lnk
 
-# Development
-**/.env
-**/*.fcc
-**/*.ign
+.iso-livecd

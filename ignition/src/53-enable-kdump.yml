@@ -1,0 +1,10 @@
+# # kexec doesn't work yet on 6.2+ kernels
+# # See: https://github.com/coreos/fedora-coreos-tracker/issues/1430
+# kernel_arguments:
+#   should_exist:
+#     - "crashkernel=300M"
+
+# systemd:
+#   units:
+#     - name: kdump.service
+#       enabled: true

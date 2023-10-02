@@ -1,0 +1,8 @@
+# storage:
+#   files:
+#     - path: /etc/systemd/zram-generator.conf.d/zz-enable-zram.conf
+#       mode: 0644
+#       contents:
+#         inline: |
+#           # Enable a `/dev/zram0` device.
+#           [zram0]

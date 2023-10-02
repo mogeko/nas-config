@@ -1,26 +1,13 @@
-# Enable environment variables for dev
-ifneq (,$(wildcard ./.env))
-    include .env
-    export
-endif
+.PHONY: all ign iso
 
-ENVSUBST := /usr/bin/env envsubst
-BUTANE := /usr/bin/env butane
+all: ign
 
-TEMPLATE := $(PWD)/.github/config.template
+ign: ignition
+	@$(MAKE) -C $<
 
-.PHONY: all fcc ign
+.iso-livecd:
+	@docker run --pull=always --rm -v ./$@:/data -w /data \
+		quay.io/coreos/coreos-installer:release download \
+			-s stable -p metal -f $@
 
-all: nas.ign
-
-fcc: $(TEMPLATE)
-	@$(ENVSUBST) < $(TEMPLATE)
-
-%.fcc:
-	@$(MAKE) -s fcc > $@
-
-ign:
-	@$(MAKE) -s fcc | $(BUTANE) --pretty --strict
-
-%.ign:
-	@$(MAKE) -s ign > $@
+iso: .iso-livecd

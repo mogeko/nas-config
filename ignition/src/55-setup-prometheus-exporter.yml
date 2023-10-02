@@ -1,0 +1,27 @@
+storage:
+  files:
+    - path: /etc/containers/systemd/node-exporter.container
+      mode: 0644
+      contents:
+        inline: |
+          [Unit]
+          Description=Prometheus exporter for hardware and OS metrics (containerized)
+          After=network-online.target
+          Wants=network-online.target
+
+          [Service]
+          TimeoutStartSec=900
+
+          [Container]
+          ContainerName=node-exporter
+          Image=quay.io/prometheus/node-exporter:latest
+          PodmanArgs=--pid=host
+          Network=host
+          Mount=type=bind,src=/,dst=/host,ro=true,bind-propagation=rslave
+          LogDriver=journald
+          AddCapability=SYS_TIME
+          AutoUpdate=registry
+          Exec=--path.rootfs=/host
+
+          [Install]
+          WantedBy=multi-user.target
