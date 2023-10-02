@@ -19,21 +19,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - run: mkdir -p dist
-      - uses: mikefarah/yq@v4.35.2
-        with:
-          cmd: |
-            yq eval-all '. as $item ireduce ({}; . *+ $item)' \
-              ./ignition/src/*.yml > ./dist/butane.yml
+      - run: mkdir -p ./ignition/dist
       - run: |
-          podman run --rm -v ${PWD}:/pwd -w /pwd \
+          podman run --rm -v "${PWD}":/pwd -w /pwd \
+            docker.io/mikefarah/yq:latest eval-all '. as $item ireduce ({}; . *+ $item)' \
+              ./src/*.yml > ./dist/butane.yml
+        working-directory: ignition
+      - run: |
+          podman run --rm -v "${PWD}":/pwd -w /pwd \
             quay.io/coreos/butane:release --pretty --strict \
               dist/butane.yml > dist/ignition.json
           install LICENSE README.md dist
+        working-directory: ignition
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: dist
+          path: ignition/dist
 
   deploy:
     environment:
