@@ -1,27 +1,13 @@
-BUTANE := /usr/bin/env butane
-YQ     := /usr/bin/env yq
+.PHONY: all ign iso
 
-.PHONY: all
-all: clean dist/ignition.json
+all: ign
 
-dist/ignition.json: dist/butane.yml
-	@$(BUTANE) --pretty --strict $< > $@
+ign: ignition
+	@$(MAKE) -C $<
 
-dist/butane.yml: $(wildcard ignitions/*.yml) | dist
-	@$(YQ) eval-all '. as $$i ireduce ({}; . *+ $$i)' $^ > $@
-
-dist:
-	@mkdir -p $@
-
-iso:
+.iso-livecd:
 	@docker run --pull=always --rm -v ./$@:/data -w /data \
 		quay.io/coreos/coreos-installer:release download \
 			-s stable -p metal -f $@
 
-.PHONY: clean
-clean:
-	@rm -rf ./dist
-
-.PHONY: serve
-serve: dist/ignition.json
-	@python3 -m http.server -d dist
+iso: .iso-livecd
