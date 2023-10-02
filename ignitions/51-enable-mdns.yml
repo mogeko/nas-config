@@ -1,0 +1,16 @@
+storage:
+  files:
+    - path: /etc/systemd/resolved.conf.d/20-enable-mdns.conf
+      mode: 0644
+      contents:
+        inline: |
+          # Enable the systemd-resolved as a Multicast DNS resolver and responder.
+          [Resolve]
+          MulticastDNS=yes
+    - path: /etc/NetworkManager/conf.d/20-enable-mdns.conf
+      mode: 0644
+      contents:
+        inline: |
+          # Make sure that NetworkManager enables the Multicast DNS for any connection.
+          [connection]
+          connection.mdns=2

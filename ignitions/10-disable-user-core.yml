@@ -1,0 +1,6 @@
+passwd:
+  users:
+    - name: core
+      shell: /sbin/nologin
+      # # Delete the user `core` completely
+      # should_exist: false

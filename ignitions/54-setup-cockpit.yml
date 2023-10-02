@@ -1,0 +1,51 @@
+systemd:
+  units:
+    # To install `cockpit-*` packages by `rpm-ostree`.
+    # In the future, It will will have a more Ignition-friendly method of doing this
+    # with stronger guarantees.
+    # See: https://github.com/coreos/fedora-coreos-tracker/issues/681
+    - name: rpm-ostree-install-cockpit.service
+      enabled: false
+      contents: |
+        [Unit]
+        Description=Layer cockpit-* with rpm-ostree
+        Wants=network-online.target
+        After=network-online.target
+        # We run before `zincati.service` to avoid conflicting rpm-ostree transactions.
+        Before=zincati.service
+        ConditionPathExists=!/var/lib/%N.stamp
+
+        [Service]
+        Type=oneshot
+        RemainAfterExit=yes
+        # `--allow-inactive` ensures that rpm-ostree does not return an error if
+        # the package is already installed. This is useful if the package is added
+        # to the root image in a future Fedora CoreOS release as it will prevent
+        # the service from failing.
+        ExecStart=/usr/bin/rpm-ostree install --apply-live --allow-inactive \
+                    cockpit-system cockpit-storaged cockpit-networkmanager cockpit-ostree cockpit-machines \
+                    cockpit-podman cockpit-selinux cockpit-kdump cockpit-sosreport
+        ExecStart=/bin/touch /var/lib/%N.stamp
+
+        [Install]
+        WantedBy=multi-user.target
+    - name: cockpit.service
+      enabled: false
+      contents: |
+        [Unit]
+        Description=quay.io/cockpit/ws:latest podman container
+        Wants=rpm-ostree-install-cockpit.service
+        After=rpm-ostree-install-cockpit.service
+
+        [Service]
+        Type=oneshot
+        RemainAfterExit=yes
+        ExecStartPre=-/bin/podman rm -f cockpit-ws
+        ExecStart=/usr/bin/podman container runlabel --name cockpit-ws RUN quay.io/cockpit/ws:latest
+        ExecStop=/usr/bin/podman rm -f cockpit-ws
+        Restart=on-failure
+        RestartSec=5s
+        KillMode=none
+
+        [Install]
+        WantedBy=multi-user.target

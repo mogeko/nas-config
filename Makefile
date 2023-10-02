@@ -1,29 +1,21 @@
-# Enable environment variables for dev
-ifneq (,$(wildcard ./.env))
-    include .env
-    export
-endif
-
-ENVSUBST := /usr/bin/env envsubst
 BUTANE := /usr/bin/env butane
-
-TEMPLATE := $(PWD)/ignitions/main.yml
+YQ     := /usr/bin/env yq
 
 .PHONY: all
-all: dist/ignition.json
+all: clean dist/ignition.json
 
 dist/ignition.json: dist/butane.yml
 	@$(BUTANE) --pretty --strict $< > $@
 
-dist/butane.yml: $(TEMPLATE) dist
-	@$(ENVSUBST) < $< > $@
+dist/butane.yml: $(wildcard ignitions/*.yml) | dist
+	@$(YQ) eval-all '. as $$i ireduce ({}; . *+ $$i)' $^ > $@
 
 dist:
 	@mkdir -p $@
 
 .PHONY: clean
 clean:
-	@rm -r dist
+	@rm -rf ./dist
 
 .PHONY: serve
 serve: dist/ignition.json

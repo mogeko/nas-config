@@ -1,0 +1,15 @@
+passwd:
+  users:
+    - name: mogeko
+      gecos: Zheng Junyi
+      ssh_authorized_keys:
+        - ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCTIqz0qfAgz9IX9goYCiaeEBtstlC94pPu5sIdAuUAqXa5NLw8Acv4EVr/e2fnE8s+ZXqG51JdXIYtu7IBNcxPvafJVakAxU4LQtOugQeHjv5uVRPgJv3ss16VKPafTcS8aonnI8F+GnjgN61NCzK1tcf3N2xgKv5Q2/1WLr0B0LyoXUUn+wGWWZMO1AUtd2v+x2Gpy9m86luC7sDJA3gYfcuV0RlYmGaJMKB5QeMsiF4eIa6qNsXeTYG+ODi8o3vmuWyk3CjjnNJe5sc5ntgxX5r8RjLvsNi/3mHFb24JJH5CjTEVtqNmHEqzE9qEm9JDlfuJvTYQz5StdUdBbAw22LZOi6+CFX2bK+RIAaP0Vm5kYD3K73Ppe2MtcPEhfa56kMZLdyqjKB9yemnxyyzsCi7ozqGYUVFpsZDtJwimJHhpx17YzooqrDXIVZ1+lQacJ1xeRf/TaZh+oLAqFKO9RT+bfTVRqKHG0o6gfVdsaHWA+VrUScKcV0aWV+89d7E= zhengjunyi@live.com
+      groups:
+        - wheel
+        - sudo
+
+storage:
+  files:
+    # Enable linger for the user.
+    - path: /var/lib/systemd/linger/mogeko
+      mode: 0644
