@@ -13,6 +13,11 @@ dist/butane.yml: $(wildcard ignitions/*.yml) | dist
 dist:
 	@mkdir -p $@
 
+iso:
+	@docker run --pull=always --rm -v ./$@:/data -w /data \
+		quay.io/coreos/coreos-installer:release download \
+			-s stable -p metal -f $@
+
 .PHONY: clean
 clean:
 	@rm -rf ./dist

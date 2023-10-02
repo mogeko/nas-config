@@ -69,4 +69,5 @@ $RECYCLE.BIN/
 
 # Development
 dist/
+iso/
 .env*
