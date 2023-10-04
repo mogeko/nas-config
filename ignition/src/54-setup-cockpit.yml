@@ -34,7 +34,7 @@ systemd:
       contents: |
         [Unit]
         Description=quay.io/cockpit/ws:latest podman container
-        Wants=rpm-ostree-install-cockpit.service
+        Requires=rpm-ostree-install-cockpit.service
         After=rpm-ostree-install-cockpit.service
 
         [Service]

@@ -1,6 +1,7 @@
 [Unit]
 Description=Kubernetes NAS
-Before=local-fs.target
+Wants=network-online.target
+After=network-online.target
 
 [Service]
 TimeoutStartSec=900

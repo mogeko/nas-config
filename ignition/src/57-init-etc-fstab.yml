@@ -1,0 +1,7 @@
+storage:
+  files:
+    - path: /etc/fstab
+      mode: 0644
+      contents:
+        inline: |
+          # <device>                                <dir> <type> <options> <dump> <fsck>
