@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: nas-data-pvc
+  namespace: nas-production
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-storage
+  resources:
+    requests:
+      storage: 2Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nas-deployment
+  namespace: nas-production
+  labels:
+    app: nas
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nas
+  template:
+    metadata:
+      labels:
+        app: nas
+    spec:
+      volumes:
+        - name: nas-data
+          persistentVolumeClaim:
+            claimName: nas-data-pvc
+      containers:
+        - name: alist
+          image: ghcr.io/mogeko/alist:latest
+          ports:
+            - containerPort: 5244
+          volumeMounts:
+            - name: nas-data
+              mountPath: /mnt/data

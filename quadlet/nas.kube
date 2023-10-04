@@ -1,0 +1,16 @@
+[Unit]
+Description=Kubernetes NAS
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+TimeoutStartSec=900
+
+[Kube]
+Network=nas.network
+UserNS=auto
+Yaml=/home/mogeko/.config/containers/kube-play/nas.yml
+LogDriver=journald
+
+[Install]
+WantedBy=multi-user.target default.target
