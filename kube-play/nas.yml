@@ -17,16 +17,19 @@ metadata:
   name: nas-deployment
   namespace: nas-production
   labels:
-    app: nas
+    app: nas-payload
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nas
+      app: nas-payload
   template:
     metadata:
       labels:
-        app: nas
+        app: nas-payload
+      annotations:
+        io.containers.autoupdate: registry
+        io.containers.sdnotify: conmon
     spec:
       volumes:
         - name: nas-data

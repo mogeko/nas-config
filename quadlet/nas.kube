@@ -1,10 +1,11 @@
 [Unit]
-Description=Kubernetes NAS
-Wants=network-online.target
+Description=A K8s workloads running via podman-kube-play
+Documentation=man:podman-kube-play(1)
 After=network-online.target
+Wants=network-online.target
 
 [Service]
-TimeoutStartSec=900
+TimeoutStopSec=70
 
 [Kube]
 Network=nas.network

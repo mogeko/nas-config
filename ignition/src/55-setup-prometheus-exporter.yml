@@ -6,11 +6,12 @@ storage:
         inline: |
           [Unit]
           Description=Prometheus exporter for hardware and OS metrics (containerized)
+          Documentation=man:podman-systemd.unit(5)
           After=network-online.target
           Wants=network-online.target
 
           [Service]
-          TimeoutStartSec=900
+          TimeoutStartSec=70
 
           [Container]
           ContainerName=node-exporter
