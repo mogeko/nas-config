@@ -9,7 +9,19 @@ passwd:
         - sudo
 
 storage:
+  directories:
+    - path: /home/mogeko/share
+      mode: 0755
+      user:
+        name: mogeko
+      group:
+        name: mogeko
   files:
     # Enable linger for the user.
     - path: /var/lib/systemd/linger/mogeko
       mode: 0644
+    - path: /etc/exports.d/mogeko.exports
+      mode: 0644
+      contents:
+        inline: |
+          /home/mogeko/share *(rw,all_squash,anonuid=1001,anongid=1001)

@@ -5,7 +5,8 @@ storage:
       contents:
         inline: |
           [Unit]
-          Description=Prometheus exporter for hardware and OS metrics (containerized)
+          Description=Prometheus exporter for hardware and OS metrics
+          Documentation=https://github.com/prometheus/node_exporter#docker
           Documentation=man:podman-systemd.unit(5)
           After=network-online.target
           Wants=network-online.target
