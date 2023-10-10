@@ -1,0 +1,13 @@
+systemd:
+  units:
+    - name: container-default-network.service
+      enabled: false
+      contents: |
+        [Unit]
+        RequiresMountsFor=%t/containers
+
+        [Service]
+        ExecStart=/usr/bin/podman network create --ignore --driver=bridge --ipv6 systemd-default
+        Type=oneshot
+        RemainAfterExit=yes
+        SyslogIdentifier=%N
