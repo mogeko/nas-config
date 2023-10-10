@@ -1,0 +1,50 @@
+storage:
+  directories:
+    - path: /mnt/nfs-share
+      mode: 0755
+  files:
+    - path: /etc/modules-load.d/nfs.conf
+      mode: 0660
+      contents:
+        inline: nfsd
+    - path: /etc/exports
+      mode: 0644
+      contents:
+        inline: |
+          /mnt/nfs-share *(rw,fsid=0,sync,no_subtree_check,no_root_squash)
+    - path: /etc/containers/systemd/nfs-server.container
+      mode: 0644
+      contents:
+        inline: |
+          [Unit]
+          Description=NFS Server
+          Documentation=https://en.opensuse.org/Portal:Container/Image/nfs-server
+          Documentation=man:podman-systemd.unit(5)
+          After=network-online.target local-fs.target firewalld.service
+          Wants=network-online.target
+
+          [Service]
+          TimeoutStartSec=70
+
+          [Container]
+          ContainerName=nfs-server
+          Image=registry.opensuse.org/opensuse/nfs-server:latest
+          Network=nfs-server.network
+          PublishPort=2049:2049
+          Mount=type=bind,src=/etc/exports,dst=/etc/exports,ro=true
+          Mount=type=bind,src=/etc/exports.d,dst=/etc/exports.d,ro=true
+          Mount=type=bind,src=/var/home,dst=/home
+          Mount=type=bind,src=/var/mnt/nfs-share,dst=/mnt/nfs-share
+          PodmanArgs=--privileged
+          LogDriver=journald
+          AutoUpdate=registry
+
+          [Install]
+          WantedBy=multi-user.target
+    - path: /etc/containers/systemd/nfs-server.network
+      mode: 0644
+      contents:
+        inline: |
+          [Network]
+          Driver=bridge
+          IPv6=true
