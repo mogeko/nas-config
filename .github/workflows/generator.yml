@@ -33,7 +33,7 @@ jobs:
           install LICENSE README.md dist
         working-directory: ignition
       - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
+        uses: actions/upload-pages-artifact@v3
         with:
           path: ignition/dist
 
